@@ -1,0 +1,4 @@
+# Local WP + DB data (lives in Docker volumes, not in git)
+.env
+*.log
+.DS_Store

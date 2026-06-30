@@ -1,0 +1,16 @@
+/*
+Theme Name: Linden Court
+Theme URI: https://lindencourt.example
+Author: Ghali Salama
+Description: Dark-luxury theme for Linden Court Serviced Apartments. Built on Hello Elementor + Elementor + Advanced Custom Fields + MotoPress Hotel Booking.
+Template: hello-elementor
+Version: 1.0.0
+Requires at least: 6.0
+Tested up to: 6.7
+Requires PHP: 8.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: linden
+*/
+
+/* Real styles live in css/linden.css (enqueued via functions.php). */

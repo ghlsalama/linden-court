@@ -1,0 +1,64 @@
+{
+    "key": "group_lctest",
+    "title": "Testimonial Details",
+    "fields": [
+        {
+            "key": "field_lc_rating",
+            "label": "Rating (1-5)",
+            "name": "rating",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "Star rating shown on the testimonial.",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 5,
+            "min": 1,
+            "max": 5,
+            "placeholder": "",
+            "step": 1,
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_lc_stay",
+            "label": "Stay / Apartment",
+            "name": "stay",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "e.g. “Stayed in the One-Bedroom Suite”.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "lc_testimonial"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_cloud": false,
+    "show_in_rest": 0
+}
