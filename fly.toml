@@ -1,0 +1,36 @@
+# Fly.io config for the Linden Court WordPress demo.
+# Deploys the bundled WordPress + MariaDB image (render.Dockerfile) as one
+# machine with a persistent volume at /data, sleeping when idle to stretch the
+# free-trial credit.
+app = "linden-court"
+primary_region = "lhr"   # London — close to a UK audience
+
+[build]
+  dockerfile = "render.Dockerfile"
+
+[env]
+  PORT = "8080"
+  WORDPRESS_DB_NAME     = "wordpress"
+  WORDPRESS_DB_USER     = "wordpress"
+  WORDPRESS_DB_PASSWORD = "linden-fly-db-demo"
+  WORDPRESS_DB_HOST     = "localhost"
+  WP_TITLE              = "Linden Court Serviced Apartments"
+  WP_ADMIN_USER         = "admin"
+  WP_ADMIN_EMAIL        = "admin@lindencourt.example"
+  # Set WP_ADMIN_PASSWORD and WP_URL via `fly secrets set` (see DEPLOY-FLY.md).
+  WP_URL                = "https://linden-court.fly.dev"
+
+[http_service]
+  internal_port       = 8080
+  force_https         = true
+  auto_stop_machines  = true   # sleep when idle — saves the free credit
+  auto_start_machines = true
+  min_machines_running = 0
+
+# Persistent storage for MariaDB + uploads (survives restarts/deploys).
+[[mounts]]
+  source      = "linden_data"
+  destination = "/data"
+
+[vm]
+  memory = "512mb"   # 256mb is too tight for WP + MariaDB together
