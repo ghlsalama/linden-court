@@ -167,6 +167,29 @@ foreach ( $services as $s ) {
 }
 echo "  Services: " . count( $services ) . " created\n";
 
+/* --------------------- MOTOPRESS SYSTEM PAGES --------------------- */
+// MotoPress needs Checkout / Search Results / Confirmation / etc. pages
+// configured with the right shortcodes; without them the booking flow 500s
+// (null page lookup → "headers already sent"). Create + wire the options.
+$mphb_pages = array(
+	array( 'Checkout', 'mphb-checkout', 'mphb_checkout_page', '[mphb_checkout]' ),
+	array( 'Search Results', 'mphb-search-results', 'mphb_search_results_page', '[mphb_search_results]' ),
+	array( 'Booking Confirmation', 'mphb-booking-confirmation', 'mphb_booking_confirmation_page', '[mphb_booking_confirmation]' ),
+	array( 'Booking Cancellation', 'mphb-booking-cancellation', 'mphb_booking_cancellation_page', '[mphb_booking_cancellation]' ),
+	array( 'Payment Successful', 'mphb-payment-successful', 'mphb_payment_success_page', '<p>Thank you — your payment was received and your booking is confirmed.</p>' ),
+	array( 'Payment Failed', 'mphb-payment-failed', 'mphb_payment_failed_page', '<p>Your payment did not go through. Please try again or contact us.</p>' ),
+);
+foreach ( $mphb_pages as $mp ) {
+	if ( get_option( $mp[2] ) ) { continue; } // already configured
+	$ex   = get_page_by_path( $mp[1] );
+	$pid  = $ex ? $ex->ID : wp_insert_post( array(
+		'post_type' => 'page', 'post_status' => 'publish',
+		'post_title' => $mp[0], 'post_name' => $mp[1], 'post_content' => $mp[3],
+	) );
+	update_option( $mp[2], $pid );
+}
+echo "  MotoPress system pages: configured\n";
+
 /* ---------------------------- NAV MENU --------------------------- */
 $menu = wp_get_nav_menu_object( 'Primary' );
 if ( ! $menu ) {

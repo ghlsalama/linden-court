@@ -20,6 +20,6 @@ COPY render-entrypoint.sh /usr/local/bin/render-entrypoint.sh
 RUN chmod +x /usr/local/bin/render-entrypoint.sh \
  && mkdir -p /run/mysqld && chown mysql:mysql /run/mysqld
 
-# The official wordpress entrypoint runs first (generates wp-config.php from
-# WORDPRESS_DB_* env), then execs our CMD.
-CMD ["/usr/local/bin/render-entrypoint.sh"]
+# Self-contained: our entrypoint copies WP core, writes wp-config, starts
+# MariaDB, seeds, and runs Apache — no reliance on the base image's entrypoint.
+ENTRYPOINT ["/usr/local/bin/render-entrypoint.sh"]

@@ -1,36 +1,42 @@
-# Fly.io config for the Linden Court WordPress demo.
-# Deploys the bundled WordPress + MariaDB image (render.Dockerfile) as one
-# machine with a persistent volume at /data, sleeping when idle to stretch the
-# free-trial credit.
-app = "linden-court"
-primary_region = "lhr"   # London — close to a UK audience
+# fly.toml app configuration file generated for linden-court on 2026-06-30T20:32:55+01:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'linden-court'
+primary_region = 'lhr'
 
 [build]
-  dockerfile = "render.Dockerfile"
+  dockerfile = 'render.Dockerfile'
 
 [env]
-  PORT = "8080"
-  WORDPRESS_DB_NAME     = "wordpress"
-  WORDPRESS_DB_USER     = "wordpress"
-  WORDPRESS_DB_PASSWORD = "linden-fly-db-demo"
-  WORDPRESS_DB_HOST     = "localhost"
-  WP_TITLE              = "Linden Court Serviced Apartments"
-  WP_ADMIN_USER         = "admin"
-  WP_ADMIN_EMAIL        = "admin@lindencourt.example"
-  # Set WP_ADMIN_PASSWORD and WP_URL via `fly secrets set` (see DEPLOY-FLY.md).
-  WP_URL                = "https://linden-court.fly.dev"
+  PORT = '8080'
+  WORDPRESS_DB_HOST = 'localhost'
+  WORDPRESS_DB_NAME = 'wordpress'
+  WORDPRESS_DB_PASSWORD = 'linden-fly-db-demo'
+  WORDPRESS_DB_USER = 'wordpress'
+  WP_ADMIN_EMAIL = 'admin@lindencourt.example'
+  WP_ADMIN_USER = 'admin'
+  WP_TITLE = 'Linden Court Serviced Apartments'
+  WP_URL = 'https://linden-court.fly.dev'
+
+[[mounts]]
+  source = 'linden_data'
+  destination = '/data'
 
 [http_service]
-  internal_port       = 8080
-  force_https         = true
-  auto_stop_machines  = true   # sleep when idle — saves the free credit
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = false
   auto_start_machines = true
-  min_machines_running = 0
+  min_machines_running = 1
 
-# Persistent storage for MariaDB + uploads (survives restarts/deploys).
-[[mounts]]
-  source      = "linden_data"
-  destination = "/data"
+  [[http_service.checks]]
+    grace_period = "5m"
+    interval = "30s"
+    method = "GET"
+    path = "/"
+    timeout = "10s"
 
-[vm]
-  memory = "512mb"   # 256mb is too tight for WP + MariaDB together
+[[vm]]
+  memory = '512mb'
