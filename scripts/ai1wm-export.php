@@ -18,6 +18,20 @@ if ( ! $secret ) {
 $params = array(
 	'secret_key' => $secret,
 	'storage'    => 'linden-export-' . substr( md5( uniqid( '', true ) ), 0, 8 ),
+	// Slim package: DB + theme only. Plugins (Elementor/ACF/MotoPress) are
+	// large and get re-installed fresh on the destination host; their DATA
+	// (rooms, pages, settings) travels in the database. Keeps the file small
+	// for hosts with tight upload limits.
+	'options'    => array(
+		'no_plugins'         => 1,
+		'no_muplugins'       => 1,
+		'no_media'           => 1,
+		'no_cache'           => 1,
+		'no_spam_comments'   => 1,
+		'no_post_revisions'  => 1,
+		'no_inactive_plugins'=> 1,
+		'no_inactive_themes' => 1,
+	),
 );
 
 echo "Starting AI1WM export (storage = {$params['storage']})…\n";
